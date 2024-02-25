@@ -19,49 +19,59 @@ mongoose.connect('mongodb://127.0.0.1:27017/test');
 
 app.post('/register',(req,res)=>{
     const {name,email,password}=req.body;
-    bcrypt.hash(password,10)
-    .then(hash=>{
-        RegisterModel.create({name:name,email:email,password:hash})
-        .then(result=>res.json("Account created"+result))
-        .catch(err=>res.json(err))
-    }
-        
-         )
-    //RegisterModel.findOne({email:email})
-    //.then(user=> {
-       // if(user){
-       //     res.json("Already have an account")
-       // }
-       // else{
-       //     RegisterModel.create({name:name,email:email,password:hash})
+  
+    RegisterModel.findOne({email:email})
+    .then(user=> {
+        if(user){
+            res.json("Already have an account")
+       }
+        else{
+            bcrypt.hash(password,10)
+            .then(hash=>{
+            RegisterModel.create({name:name,email:email,password:hash})
+            .then(result=>res.json("Account created"))
+          //  .alert("Created")
+            .catch(err=>res.json(err))
+        }
             
-       // }
-  //  })
-    .catch(err=>res.json(err))
+             ) .catch(err=>res.json(err))
+            
+            
+        }
+    })
+   
 })
 
-app.post('/login',(req,res)=>{
-    const {email,password}=req.body;
-    RegisterModel.findOne({email:email})
-    .then(user=>{
-        bcrypt.compare(password,user.password,(err,response)=>{
-            if(response){
-                const token= jwt.sign({email:user.email,role:user.role,},"jwt-secret-key",{expiresIn:'1d'})
-                res.cookie('token',token)
-                return res.json("Success")
-            }else{
-                return res.json("The password is incorrect")
+app.post('/login', (req, res) => {
+    const { email, password } = req.body;
+    RegisterModel.findOne({ email: email })
+        .then(user => {
+            if (user) {
+                bcrypt.compare(password, user.password, (err, result) => {
+                    if (err) {
+                        return res.status(500).json({ error: "Internal Server Error" });
+                    }
+                    if (result) {
+                        // Passwords match
+                        const token = jwt.sign({ email: user.email, role: user.role }, "jwt-secret-key", { expiresIn: '1d' });
+                        res.cookie('token', token);
+                        return res.json({ status: "Success", role: user.role });
+                    } else {
+                        // Passwords don't match
+                        return res.status(401).json({ error: "Incorrect password" });
+                    }
+                });
+            } else {
+                return res.status(404).json({ error: "No record existed" });
             }
         })
-        if(user.password===password){
+        .catch(err => {
+            console.error("Error:", err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        });
+});
 
-        }
-        else{
-            return res.json("No record existed")
-        }
-    }
-    )
-})
+
 app.listen(
     3001,
     ()=>

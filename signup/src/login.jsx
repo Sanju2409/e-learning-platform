@@ -10,16 +10,29 @@ function Login(){
     axios.defaults.withCredentials=true;
    
 
-    const handleSubmit=(e)=>{
-        e.preventDefault();
-        axios.post("http://localhost:3001/register ",{email,password})
-        .then(result=>{
-            console.log(result.data),
-            navigate('/home')
-        }).catch(err=>console.log(err))
-
-        .catch(err=>console.log(err))
-    }
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      axios.post("http://localhost:3001/login", { email, password })
+          .then(result => {
+              console.log("Login Result:", result.data);
+              if (result.data.status === "Success") {
+                  navigate('/home');
+              } else {
+                if (result.data.error === "No record existed") {
+                  alert("This email is not registered. Please register or use a different email.");
+              } else if (result.data.error === "Incorrect password") {
+                  alert("Incorrect password. Please try again.");
+              } else {
+                  alert("An error occurred. Please try again later.");
+              }
+              }
+          })
+          .catch(err => {
+              console.error("Error:", err);
+              alert("An error occurred. Please try again later.");
+          });
+  };
+  
     return (
         <div className="d-flex justify-content-center align-items-center bg-primary vh-100 ">
       <div className="bg-white p-3 rounded w-75">
