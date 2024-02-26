@@ -3,10 +3,7 @@ const RegisterSchema=new mongoose.Schema( {
     name:String,
     email:String,
     password:String,
-    role:{
-        type:String,
-        default:"student"
-    }
+    role: { type: String, enum: ["staff", "student"] } 
 
 })
 const RegisterModel=mongoose.model("registers",RegisterSchema)

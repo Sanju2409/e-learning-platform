@@ -10,16 +10,18 @@ import axios from 'axios'
 import { Link,useNavigate } from 'react-router-dom';
 
 function Signup() {
-
+  const [role,setRole]=useState('')
   const [name,setName]=useState('')
   const[email,setEmail]=useState('')
   const[password,setPassword]=useState('')
   const navigate=useNavigate()
  
-
+  const handleRoleChange = (e) => {
+    setRole(e.target.value); // Update the role state when a radio button is selected
+  };
   const handleSubmit= (e) => {
     e.preventDefault();
-    axios.post('http://localhost:3001/register',{name,email,password})
+    axios.post('http://localhost:3001/register',{name,email,password,role})
     .then(result => {
         console.log(result)
        
@@ -37,6 +39,26 @@ function Signup() {
       <div className="bg-white p-3 rounded w-75">
         <h2>Register</h2>
         <form onSubmit={handleSubmit}>
+        <input 
+                type="radio"
+                id="staff"
+                name="staff"
+                value="staff"
+                checked={role === "staff"} // Set checked attribute based on role state
+                onChange={handleRoleChange}
+
+        />
+        <label htmlFor="staff">Staff</label>
+        <input 
+                type="radio"
+                id="student"
+                name="student"
+                value="student"
+                checked={role === "student"} // Set checked attribute based on role state
+                onChange={handleRoleChange}
+
+        />
+        <label htmlFor="student">Student</label>
           <div className="mb-17">
             <label htmlFor="email">
               <strong>Name</strong>  

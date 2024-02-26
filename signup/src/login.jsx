@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 function Login(){
+  //const[role,setRole]=useState('')
     const[email,setEmail]=useState('')
     const[password,setPassword]=useState('')
     const navigate=useNavigate()
@@ -16,7 +17,13 @@ function Login(){
           .then(result => {
               console.log("Login Result:", result.data);
               if (result.data.status === "Success") {
-                  navigate('/home');
+                if(result.data.role==="student"){
+                  navigate('/Student-dashboard');
+                }
+                else{
+                  navigate('/Staff-Dashboard')
+                }
+                  
               } else {
                 if (result.data.error === "No record existed") {
                   alert("This email is not registered. Please register or use a different email.");

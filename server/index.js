@@ -18,7 +18,7 @@ app.use(cookieParser())
 mongoose.connect('mongodb://127.0.0.1:27017/test');
 
 app.post('/register',(req,res)=>{
-    const {name,email,password}=req.body;
+    const {name,email,password,role}=req.body;
   
     RegisterModel.findOne({email:email})
     .then(user=> {
@@ -28,7 +28,7 @@ app.post('/register',(req,res)=>{
         else{
             bcrypt.hash(password,10)
             .then(hash=>{
-            RegisterModel.create({name:name,email:email,password:hash})
+            RegisterModel.create({name:name,email:email,password:hash,role:role})
             .then(result=>res.json("Account created"))
           //  .alert("Created")
             .catch(err=>res.json(err))

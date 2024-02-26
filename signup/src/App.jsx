@@ -1,22 +1,33 @@
-
-//import reactLogo from './assets/react.svg'
-//import viteLogo from '/vite.svg'
-
-import './App.css'
+//import React from 'react';
+import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Signup from './signup';
+import Login from './login';
+//import Dashboard from './';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Dashboard from './Dashboard';
+//import PrivateRoute from './PrivateRoute';
+//import { AuthProvider } from './context/AuthProvider';
 
-import Signup from "./signup";
-import Login from "./login" ;
-import { BrowserRouter,Routes,Route } from 'react-router-dom';
+import StudentsDashboard from './Student-dashboard'; 
+import StaffDashboard from './Staff-Dashboard'; 
 
-function App(){
+function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/register" element={<Signup />}></Route>
-        <Route path="/login" element={<Login />}></Route>
-      </Routes>
-    </BrowserRouter>
-  )
+    <Router>
+    
+        <Routes>
+          <Route path="/register" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/Dashboard" element={<Dashboard />} />
+          <Route path="/Student-dashboard" element={<StudentsDashboard />} />
+          <Route path="/Staff-Dashboard" element={<StaffDashboard />} />
+          
+          
+        </Routes>
+      
+    </Router>
+  );
 }
-export default App
+
+export default App;
