@@ -63,7 +63,7 @@ const StaffDashboard = () => {
     <div>
       <nav className="navbarstaff justify-content-space-between fixed-top ">
         <div className="container-fluid d-flex justify-content-between">
-          <div><p className="welcome-message">Welcome, {userEmail}!</p></div>
+          <div><p className="welcome-message">Hello, {userEmail}!</p></div>
 
 
           <div>
