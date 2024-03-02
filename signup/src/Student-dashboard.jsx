@@ -21,6 +21,13 @@ const StudentDashboard=()=>{
     return(
         <div>
              <h2>Student Dashboard {message}</h2>
+             <nav>
+                <ul>
+                    <li>Home</li>
+                    <li>My Courses</li>
+                    <li>Profile</li>
+                </ul>
+             </nav>
         </div>
     )
 }

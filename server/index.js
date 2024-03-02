@@ -32,6 +32,32 @@ app.post('/register',(req,res)=>{
             .then(hash=>{
             RegisterModel.create({name:name,email:email,password:hash,role:role})
             .then(result=>res.json("Account created"))
+            
+          
+            .catch(err=>res.json(err))
+            
+        }
+            
+             ) .catch(err=>res.json(err))
+            
+            
+        }
+    })
+   
+})
+app.post('/addstaff',(req,res)=>{
+    const {name,email,password,role}=req.body;
+  
+    RegisterModel.findOne({email:email})
+    .then(user=> {
+        if(user){
+            res.json("Already have an account")
+       }
+        else{
+            bcrypt.hash(password,10)
+            .then(hash=>{
+            RegisterModel.create({name:name,email:email,password:hash,role:role})
+            .then(result=>res.json("Account created"))
           //  .alert("Created")
             .catch(err=>res.json(err))
         }
@@ -55,8 +81,8 @@ app.post('/login', (req, res) => {
                     }
                     if (result) {
                         // Passwords match
-                        const token = jwt.sign({ email: req.body.email, role: req.body.role}, "jwt-access-key", { expiresIn: '1m' });
-                        const refreshtoken= jwt.sign({ email: req.body.email, role: req.body.role}, "jwt-refresh-key", { expiresIn: '2m' });
+                        const token = jwt.sign({ email: req.body.email, role: req.body.role}, "jwt-access-key", { expiresIn: '60m' });
+                        const refreshtoken= jwt.sign({ email: req.body.email, role: req.body.role}, "jwt-refresh-key", { expiresIn: '60m' });
                         res.cookie('token', token,{httpOnly:true},{maxAge:60000});
                         res.cookie('refreshtoken', refreshtoken,{httpOnly:true,maxAge:60000,secure:true,sameSite:'strict'});
 
@@ -121,6 +147,9 @@ const renewToken=(req,res)=>{
     return exist;
 }
 app.get('/Student-dashboard',varifyUser,(req,res)=>{
+    return res.json({valid:true,message:"authorized"})
+})
+app.get('/addstaff',varifyUser,(req,res)=>{
     return res.json({valid:true,message:"authorized"})
 })
 app.get('/Staff-Dashboard',varifyUser,(req,res)=>{

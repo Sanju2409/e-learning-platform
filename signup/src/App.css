@@ -18,6 +18,45 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+ .navbarstaff {
+  background-color: #e8baba;
+  padding: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 1000; /* Ensure it appears above other content */
+  /* Optional: Add a background color */
+  width: 100%;
+ margin-top: 0%;
+ 
+}
+
+.welcome-message {
+  font-size: 20px; /* Adjust the font size as needed */
+}
+
+.nav-item {
+  padding: 10px;
+  font-size: 20px;
+}
+
+.navbarstaff .navbar-nav.nav-link {
+  color: #fff;
+  text-decoration: none;
+  
+}
+.navbar-nav-horizontal {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navbarstaff.nav-link:hover {
+  color: #ccc;
+} 
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);

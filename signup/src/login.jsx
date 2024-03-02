@@ -2,11 +2,12 @@ import { useState } from 'react';
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate } from 'react-router-dom';
 function Login(){
   //const[role,setRole]=useState('')
     const[email,setEmail]=useState('')
     const[password,setPassword]=useState('')
+    
     const navigate=useNavigate()
     axios.defaults.withCredentials=true;
    
@@ -17,11 +18,15 @@ function Login(){
           .then(result => {
               console.log("Login Result:", result.data);
               if (result.data.status === "Success") {
-                if(result.data.role==="student"){
+                if(result.data.role==="admin"){
+                  navigate('/addstaff')
+                }
+               else if(result.data.role==="student"){
                   navigate('/Student-dashboard');
                 }
                 else{
-                  navigate('/Staff-Dashboard')
+                  
+                  navigate('/Staff-Dashboard',{ state: { userEmail: email } })
                 }
                   
               } else {
@@ -41,8 +46,10 @@ function Login(){
   };
   
     return (
-        <div className="d-flex justify-content-center align-items-center bg-primary vh-100 ">
-      <div className="bg-white p-3 rounded w-75">
+        <div className="row justify-content-center align-items-center  vh-100 ">
+         <div className="col-md-12">
+          <div className="card shadow">
+            <div className="card-body"></div>
         <h2>Login</h2>
         <form onSubmit={handleSubmit}>
           
@@ -59,7 +66,7 @@ function Login(){
                 onChange={(e) => setEmail(e.target.value)} 
                 className="form-control rounded-0"
             />
-          </div>;
+          </div>
           <div  className="mb-3">
             <label htmlFor="email">
               <strong>Password</strong>
@@ -77,9 +84,13 @@ function Login(){
           <button type="submit" className="btn btn-success w-100 rounded-0">Login</button>
          
         </form>
-
+        <p>Do not have an account?</p>
+        <Link to="/register" className="btn btn-default w-100 bg-light rounded-0 text-decoration-none">
+          Register
+        </Link>
       </div>
 
+    </div>
     </div>
     )
 }

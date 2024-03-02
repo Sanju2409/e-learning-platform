@@ -1,50 +1,57 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from  "axios";
+import  {useEffect,useState} from 'react'
+import { useNavigate } from "react-router-dom";
 
-import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-
-const Signup = () => {
- //const [role, setRole] = useState("");
+const AddStaff=()=>{
+    
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+ // const[message,setMessage]=useState('')
   const navigate = useNavigate();
 
-  //const handleRoleChange = (e) => {
-   // setRole(e.target.value);
-  //};
+ 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3001/register", {
+      const response = await axios.post("http://localhost:3001/addstaff", {
         name,
         email,
         password,
-        role:"student",
+        role:"staff",
       });
 
       console.log(response);
-      alert("Created");
-      navigate("/login");
+      alert("Created a staff");
+      navigate("/addstaff");
     } catch (err) {
       console.log(err);
     }
   };
-
+  useEffect(()=>{
+    axios.get('http://localhost:3001/Staff-Dashboard')
+    //.then(res=>console.log(res))
+    //.catch(err=>console.log(err))
+    .then(res=>{
+        if(res.data.valid){
+           console.log(res.data)
+        }
+        else{
+            navigate('/')
+        }
+    })
+})
   return (
     <div className="container-fluid">
       <div className="row justify-content-center align-items-center vh-100">
         <div className="col-md-12">
           <div className="card shadow">
             <div className="card-body">
-              <h1 className="text-center mb-3">Register</h1>
+              <h1 className="text-center mb-3">Register staff</h1>
                   <form onSubmit={handleSubmit}>
-                      
-              
+                     
           <div className="mb-3">
             <label htmlFor="name">
               <strong>Name</strong>
@@ -91,16 +98,12 @@ const Signup = () => {
             Register
           </button>
         </form>
-        <p>Already have an account</p>
-        <Link to="/login" className="btn btn-default w-100 bg-light rounded-0 text-decoration-none">
-          Login
-        </Link>
+        
       </div>
     </div>
     </div>
     </div>
     </div>
   );
-};
-
-export default Signup;
+}
+export default AddStaff;
